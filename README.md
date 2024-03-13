@@ -3,7 +3,10 @@ The application is created with frameworks Kivy and KivyMD. The purpose of the a
 
 You can create sets of words and also add images.
 
-I tested .apk on my phone (Xiaomi Redmi Note 9 Pro). The app is safe. It requires access to storage to add images. However it should work if someone deny to give the permission but without adding images.
+I tested .apk on my phone (Xiaomi Redmi Note 9 Pro). <strong>The app is safe. It requires access to storage to add images. It doesn't require access to Internet. It doesn't gather any your data.</strong> However it should work if someone deny to give the permission but without adding images.
+
+<strong>Possible issues</strong>
+After adding an image, don't remove the image and don't change its location. It could crash the app. I will change it in the future.
 
 <strong>Youtube overview</strong>
 
