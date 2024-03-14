@@ -26,7 +26,7 @@ After adding an image, don't remove the image and don't change its location. It 
 
 ### Development
 
-It requires kivymd 1.2.0. It wasn't work with older or newer version.
+It requires kivymd 1.2.0. It can't work with older or newer version.
 
 
 ```
