@@ -1,0 +1,341 @@
+#:import MDActionBottomAppBarButton kivymd.uix.toolbar.MDActionBottomAppBarButton
+
+<StartScreen>:
+    id: "start_screen"
+    name: "start_screen"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        ScrollView:
+
+            MDList:
+                id: set_container
+
+        MDBottomAppBar:
+            id: bottom
+            title: "Word Sets"
+            icon_color: "#ffffff"
+            action_items:
+                [
+                MDActionBottomAppBarButton(icon="information", on_release=lambda x: app.open_snackbar()),
+                MDActionBottomAppBarButton(icon="cog-outline", on_release=lambda x: app.show_confirmation_dialog()),
+                MDActionBottomAppBarButton(icon="plus-box-multiple-outline", on_release=lambda x: app.show_massupload_screen()),
+                #MDActionBottomAppBarButton(icon="image-auto-adjust", on_release=lambda x: app.test_images()),
+                ]
+
+            MDFabBottomAppBarButton:
+                icon: "plus"
+                md_bg_color: app.theme_cls.primary_dark
+                on_release: app.show_dialog("Set Creator", "set")
+
+            MDFabBottomAppBarButton:
+                icon: "image-plus-outline"
+                pos_hint: {"center_x": .7,"center_y": .5}
+                md_bg_color: app.theme_cls.primary_dark
+                on_release: app.show_dialog("Bit Creator", "bit")
+
+
+<CreatorScreen>:
+    id: creator_screen
+	name: "creator_screen"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDLabel:
+            id: creator_label
+            text: "Label"
+            text_color: "red"
+            font_style: "H3"
+            adaptive_size: True
+            pos_hint: {"center_x": .5,"center_y": 1}
+            halign: "center"
+
+        ScrollView:
+            size_hint: .9, .8
+
+            MDList:
+                id: container
+
+        MDBottomAppBar:
+            id: bottom_appbar
+            icon_color: "#ffffff"
+            action_items:
+                [
+                MDActionBottomAppBarButton(icon="arrow-left", on_release=lambda x: app.change_screen("start_screen")),
+                MDActionBottomAppBarButton(icon="content-save-all-outline", on_release=lambda x: app.save_set(screen="creator_screen"))
+                #MDActionBottomAppBarButton(icon="cog-outline", on_release=lambda x: app.show_confirmation_dialog())
+                ]
+
+            MDFabBottomAppBarButton:
+                icon: "plus"
+                md_bg_color: app.theme_cls.primary_dark
+                on_release: app.show_dialog("New word", "word")
+
+
+<PlayScreen>
+    id: play_screen
+    name: "play_screen"
+
+    MDFloatLayout:
+        MDFloatLayout:
+            id: rotated_box
+            size_hint: None, None
+            size: root.height / 1.05, root.width/ 1.05
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            #md_bg_color: 0.93, 0.59, 0.93, 1
+            orientation: "vertical"
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: 90
+                    origin: self.center
+            canvas.after:
+                PopMatrix
+
+        MDFabBottomAppBarButton:
+            icon: "arrow-down"
+            theme_text_color: "Custom"
+            text_color: "black"
+            md_bg_color: "white"
+            on_release: app.change_screen("start_screen")
+
+<ReturnScreen>:
+    id: return_screen
+    name: "return_screen"
+
+    BoxLayout:
+        size_hint: None, None
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        canvas.before:
+            PushMatrix
+            Rotate:
+                angle: 90
+                origin: self.center
+        canvas.after:
+            PopMatrix
+
+        AnchorLayout
+            size: root.height, root.width
+
+            MDFloatingActionButton:
+                type: "large"
+                icon: "arrow-u-left-bottom-bold"
+                anchor_x: "center"
+                anchor_y: "center"
+                elevation: 0
+                on_release: app.again()
+
+    MDTopAppBar:
+        pos_hint: {"top": 1}
+        left_action_items:[["arrow-left", lambda x: app.change_screen("start_screen")]]
+        md_bg_color: 0, 1, 0, 0
+        specific_text_color: "black"
+        elevation: 0
+
+<MassUploadScreen>:
+    id: massupload_screen
+    name: "massupload_screen"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "12dp"
+
+        MDTopAppBar:
+            title: "Import/Export"
+            #anchor_title: "left"
+            left_action_items:[["arrow-left", lambda x: app.change_screen("start_screen")]]
+            elevation: 0
+
+        MDLabel:
+            size_hint_y: .1
+            padding: 10
+            markup: True
+            text: "Upload word sets in bulk. [b]A new line with Enter for a new set.[/b] Words are separated by a coma. \nFollow this pattern (it's important): [b]set name: word, word, word, word[/b] "
+
+        MDTextField:
+            id: set_bulk
+            size_hint_y: .6
+            padding: 10
+            mode: "rectangle"
+            multiline: True
+
+        MDFlatButton:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            text: "Save"
+            theme_text_color:"Custom"
+            md_bg_color: "orange"
+            text_color:"white"
+            padding: 10
+            on_release: root.get_bulk()
+
+        MDLabel:
+            size_hint_y: .1
+            text: "To export existing sets click button, paste displayed text to a notepad."
+            padding: 10
+
+        MDFlatButton:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            text: "Export"
+            theme_text_color:"Custom"
+            md_bg_color: "orange"
+            text_color:"white"
+            padding: 10
+            on_release: root.export()
+
+<BitCreatorScreen>:
+    id: bitcreator_screen
+    name: "bitcreator_screen"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDLabel:
+            id: creator_label
+            text: "Label"
+            text_color: "red"
+            font_style: "H3"
+            adaptive_size: True
+            pos_hint: {"center_x": .5,"center_y": 1}
+            halign: "center"
+
+        ScrollView:
+            size_hint: .9, .8
+
+            MDList:
+                id: container
+
+        MDBottomAppBar:
+            id: bottom_appbar
+            icon_color: "#ffffff"
+            action_items:
+                [
+                MDActionBottomAppBarButton(icon="arrow-left", on_release=lambda x: app.change_screen("start_screen")),
+                MDActionBottomAppBarButton(icon="content-save-all-outline", on_release=lambda x: app.save_set(screen="bitcreator_screen")),
+                ]
+
+            MDFabBottomAppBarButton:
+                icon: "plus"
+                md_bg_color: app.theme_cls.primary_dark
+                on_release: app.change_screen("addbit_screen")
+
+<AddBitScreen>
+    id: addbit_screen
+    name: "addbit_screen"
+
+    MDTextField:
+        id: img_textfield
+        pos_hint: {"center_x": .5, "center_y": .3}
+        max_text_length: 50
+        size_hint_x: 0.8
+
+    MDFlatButton:
+        text: "SAVE"
+        theme_text_color: "Custom"
+        text_color: "orange"
+        pos_hint: {"center_x": .4, "center_y": .1}
+        on_release: app.add_bit()
+
+
+    MDFlatButton:
+        text: "CANCEL"
+        theme_text_color: "Custom"
+        text_color: "orange"
+        pos_hint: {"center_x": .6, "center_y": .1}
+        on_release: app.change_screen("bitcreator_screen")
+
+
+<DialogSet>:
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "90dp"
+
+    MDTextField:
+        id: set_textfield
+        pos_hint: {"center_y": .3}
+        max_text_length: 50
+        helper_text_mode: "on_error"
+
+<SetItem>:
+    id: set_item
+    markup: True
+    adaptive_height: True
+    bg_color: (1,1,1,1)
+    on_release: app.play(set_item)
+
+    IconLeftWidget:
+        icon: 'pencil'
+        theme_text_color: "Custom"
+        on_release: app.edit_item(set_item)
+
+
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        #on_release: root.delete_set(set_item)
+        on_release: root.show_alert_dialog()
+
+<ListItem>:
+    id: the_list_item
+    markup: True
+
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        on_release:
+            root.delete_item(the_list_item)
+
+<ItemConfirm>
+    on_release: root.set_icon(check)
+
+    CheckboxLeftWidget:
+        id: check
+        group: "check"
+
+
+<DialogCheckbox>:
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "90dp"
+
+    MDLabel:
+        text: "Would you like it to load sample sets?"
+
+    GridLayout:
+        rows: 2
+
+        MDBoxLayout:
+            size_hint_x: 0.1
+
+            MDCheckbox:
+                id: check1
+                size: "30dp", "30dp"
+
+        MDBoxLayout:
+            size_hint_x: 0.9
+            MDLabel:
+                text: "Polish"
+                halign: 'left'
+
+        MDBoxLayout:
+            size_hint_x: 0.1
+
+            MDCheckbox:
+                id: check2
+                size: "30dp", "30dp"
+
+        MDBoxLayout:
+            size_hint_x: 0.9
+
+            MDLabel:
+                text: "English"
+                halign: "left"
+
+
+
+
